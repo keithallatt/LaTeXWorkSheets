@@ -41,23 +41,37 @@ class TexDocument(LaTeXPiece):
         ])
 
 
-def compile_tex(filename, tex, solutions=True):
+def compile_tex(filename, tex, solutions=True, double_compile=False):
+    """ Compile LaTeX code into a pdf and save it to the current working directory. """
+    # get cwd to reset directory after.
     current = os.getcwd()
+    # convert tex into a string, if not already a string.
     tex_content = tex.__str__(solutions) if isinstance(tex, LaTeXPiece) else str(tex)
     # create temp folder to compile in.
     temp_path = tempfile.mkdtemp()
     # change directory to temp folder.
     os.chdir(temp_path)
 
-    with open('cover.tex', 'w') as f:
+    # temporary document name, only having it saved here increases maintainability.
+    doc_name = "document.tex"
+
+    # write the LaTeX content to file
+    with open(doc_name, 'w') as f:
         f.write(tex_content)
 
-    proc = subprocess.Popen(['pdflatex', '\\input{cover.tex}'])
+    # compile the document using pdflatex
+    proc = subprocess.Popen(['pdflatex', '\\input{'+doc_name+'}'])
     proc.communicate()
-    proc = subprocess.Popen(['pdflatex', '\\input{cover.tex}'])
-    proc.communicate()
+    if double_compile:
+        # for some applications, such as those that have tables of contents, sometimes 2 compiles are necessary.
+        proc = subprocess.Popen(['pdflatex', '\\input{'+doc_name+'}'])
+        proc.communicate()
 
-    os.rename('cover.pdf', filename)
+    # rename the file to the specified name.
+    os.rename(doc_name[:-3]+'pdf', filename)
+    # copy the file back to the current
     shutil.copy(filename, current)
+    # remove the temporary path
     shutil.rmtree(temp_path)
+    # change the directory back.
     os.chdir(current)
