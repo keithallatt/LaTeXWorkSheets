@@ -4,7 +4,7 @@
 import abc
 
 
-def _mask(length=4, shift=0):
+def _mask(length, shift):
     def mask_variable(var):
         return var & (((1 << length) - 1) << shift)
 
@@ -41,16 +41,20 @@ class Difficulty:
     Expert = 5 << 4
 
 
-class Variable:
-    def __init__(self, latex_string: str = "x"):
-        self.latex_string = latex_string
+class LaTeXPiece(abc.ABC):
+    def __init__(self):
+        self._on_new_page = False
+
+    @abc.abstractmethod
+    def __str__(self, solved=False):
+        pass
 
 
-class Problem(abc.ABC):
-    def __init__(self, variables: list = None,
-                 grade_level: int = GradeLevel.Grade1, difficulty: int = Difficulty.Basic):
+class Problem(LaTeXPiece):
+    def __init__(self, grade_level: int = GradeLevel.Grade1, difficulty: int = Difficulty.Basic):
+        super().__init__()
         self.gd_encoded = grade_level | difficulty
-        self.variables = [] if variables is None else variables
+        self._on_new_page = True
 
     @abc.abstractmethod
     def __str__(self, solved=False):

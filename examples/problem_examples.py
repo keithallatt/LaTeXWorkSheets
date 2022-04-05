@@ -9,7 +9,7 @@ class Columns(Problem):
     def __init__(self, num_rows: int = 6, num_columns=8, column_width: str = "1.5cm", row_spacing: str = None,
                  difficulty: int = Difficulty.Simple, operator: str = "+", op_solver=lambda x, y: x + y,
                  custom_range=None):
-        super().__init__(variables=[], grade_level=GradeLevel.Grade1, difficulty=difficulty)
+        super().__init__(grade_level=GradeLevel.Grade1, difficulty=difficulty)
 
         ranges = {
             Difficulty.Basic:
@@ -58,52 +58,40 @@ class Columns(Problem):
         return solution, no_solution
 
     def __str__(self, solved=False):
-        unsolved_code = [
+        code_lines = [
             r"\begin{figure}[ht!]",
             r"\centering"
         ]
-        solved_code = unsolved_code[::]
+
+        if self._on_new_page:
+            code_lines.insert(0, r"\newpage")
 
         nr, nc = self.dims
-
         pi = 0
 
         for col in range(nc):
-
-            u_column = [
-                r"\begin{minipage}{" + self.col_width + "}"
-            ]
-            s_column = [
-                r"\begin{minipage}{" + self.col_width + "}"
-            ]
+            column = [r"\begin{minipage}{" + self.col_width + "}"]
             for row in range(nr):
                 a, b = self.problems[pi]
                 pi += 1
                 ss, su = self.latex_single_sum(a, b, indent_level=1)
-                u_column.append(su)
-                s_column.append(ss)
-            u_column.append(r"\end{minipage}")
-            s_column.append(r"\end{minipage}")
+                if solved:
+                    column.append(ss)
+                else:
+                    column.append(su)
 
-            unsolved_code.append("\n".join(u_column))
-            solved_code.append("\n".join(s_column))
+            column.append(r"\end{minipage}")
+            code_lines.append("\n".join(column))
 
-        unsolved_code.append(r"\end{figure}")
-        solved_code.append(r"\end{figure}")
+        code_lines.append(r"\end{figure}")
 
-        u_code_joined = "\n".join(unsolved_code)
-        s_code_joined = "\n".join(solved_code)
-
-        if solved:
-            return s_code_joined
-        else:
-            return u_code_joined
+        return "\n".join(code_lines)
 
 
 class Quadratics(Problem):
     def __init__(self, num_problems: int = 3, difficulty: int = Difficulty.Basic, grade_level: int = GradeLevel.Grade7,
                  factorable: bool = False, real_solns: bool = False, vert_space: str = "7cm"):
-        super().__init__(variables=[], grade_level=grade_level, difficulty=difficulty)
+        super().__init__(grade_level=grade_level, difficulty=difficulty)
         self.num_problems = num_problems
         self.factorable = factorable
         self.real_solns = real_solns
@@ -171,9 +159,12 @@ class Quadratics(Problem):
         return quadratic, answer_str
 
     def __str__(self, solved=False):
+
         questions_formatted = [self.format_quadratic(*q) for q in self.quad_problems]
 
         code_lines = []
+        if self._on_new_page:
+            code_lines.append(r"\newpage")
 
         for formatted in questions_formatted:
             question, answers = formatted
