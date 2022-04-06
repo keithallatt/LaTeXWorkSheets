@@ -1,7 +1,7 @@
 import random
 from math import gcd
 
-from problems import Problem, GradeLevel, Difficulty
+from tex_code import Problem, GradeLevel, Difficulty
 from structures import QAdjointRoot
 
 

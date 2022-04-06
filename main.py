@@ -1,5 +1,6 @@
-from tex_compile import compile_tex, TexDocument
-from examples.problem_examples import Columns, Quadratics
+from tex_code import TexDocument, compile_tex
+from templates.columns import Columns
+from templates.quadratics import Quadratics
 
 if __name__ == '__main__':
     td = TexDocument()
@@ -9,6 +10,5 @@ if __name__ == '__main__':
     td.add_content(c)
     td.add_content(q)
 
-    compile_tex('example.pdf', td, solutions=False)
-    compile_tex('example_solns.pdf', td, solutions=True)
-
+    compile_tex('example.pdf', td, solutions=False, save_tex=True)
+    compile_tex('example_solutions.pdf', td, solutions=True, save_tex=True)

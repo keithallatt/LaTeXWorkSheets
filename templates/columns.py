@@ -1,8 +1,5 @@
 import random
-from math import gcd
-
-from problems import Problem, GradeLevel, Difficulty
-from structures import QAdjointRoot
+from tex_code import Problem, GradeLevel, Difficulty
 
 
 class Columns(Problem):
@@ -51,9 +48,9 @@ class Columns(Problem):
             r"\end{align*}",
             (r"\vspace{" + self.row_spacing + "}\n") if self.row_spacing is not None else "",
         ]
-        no_solution = "\n".join(map(lambda x: "    " * indent_level + x, lines))
+        no_solution = "\n".join(map(lambda ns: "    " * indent_level + ns, lines))
         lines.insert(4, f"    & {soln}")
-        solution = "\n".join(map(lambda x: "    " * indent_level + x, lines))
+        solution = "\n".join(map(lambda sn: "    " * indent_level + sn, lines))
 
         return solution, no_solution
 
