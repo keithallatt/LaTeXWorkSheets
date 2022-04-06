@@ -3,7 +3,7 @@ from tex_code import Problem, GradeLevel, Difficulty
 
 
 class Columns(Problem):
-    def __init__(self, num_rows: int = 6, num_columns=8, column_width: str = "1.5cm", row_spacing: str = None,
+    def __init__(self, num_rows: int = 5, num_columns=8, column_width: str = "1.3cm", row_spacing: str = None,
                  difficulty: int = Difficulty.Simple, operator: str = "+", op_solver=lambda x, y: x + y,
                  custom_range=None):
         super().__init__(grade_level=GradeLevel.Grade1, difficulty=difficulty)

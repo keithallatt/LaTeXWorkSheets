@@ -83,6 +83,7 @@ class TexDocument(LaTeXPiece):
             r"\usepackage{amsmath}",
             r"\usepackage{graphicx}",
             r"\usepackage[colorlinks=true, allcolors=blue]{hyperref}",
+            r"\linespread{1.5}"
         ]
         self._doc_begin = "\\begin{document}\n\n"
         self._body = []
