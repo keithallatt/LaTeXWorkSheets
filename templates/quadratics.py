@@ -7,11 +7,11 @@ from structures import QAdjointRoot
 
 class Quadratics(Problem):
     def __init__(self, num_problems: int = 3, difficulty: int = Difficulty.Basic, grade_level: int = GradeLevel.Grade7,
-                 factorable: bool = False, real_solns: bool = False, vert_space: str = "7cm"):
+                 factorable: bool = False, real_solutions: bool = False, vert_space: str = "7cm"):
         super().__init__(grade_level=grade_level, difficulty=difficulty)
         self.num_problems = num_problems
         self.factorable = factorable
-        self.real_solns = real_solns
+        self.real_solutions = real_solutions
         self.vert_space = vert_space
         self.quad_problems = []
 
@@ -25,23 +25,23 @@ class Quadratics(Problem):
         if self.factorable:
             # generate (ax + b) and (x + c) to generate
             # (ax+b)(x+c) = (ax^2 + (b+ac)x + bc
-            coefs = [b*c, b + a*c, a]
+            coefficients = [b*c, b + a*c, a]
             answers = [QAdjointRoot(-b, 0, a), QAdjointRoot(-c, 0, 1)]
         else:
-            if self.real_solns:
+            if self.real_solutions:
                 # if discriminant is < 0, then solutions are strictly complex.
                 while b * b - 4*a*c < 0:
                     a = random.randint(1, 4)
                     b = random.randint(-10, 10)
                     c = random.randint(-10, 10)
 
-            coefs = [c, b, a]
+            coefficients = [c, b, a]
             answers = [
                 QAdjointRoot(-b, b * b - 4 * a * c, 2 * a),
                 QAdjointRoot(b, b * b - 4 * a * c, -2 * a)
             ]
 
-        return coefs, answers
+        return coefficients, answers
 
     @staticmethod
     def format_quadratic(coefficients, answers, variable: str = 'x'):
@@ -81,7 +81,7 @@ class Quadratics(Problem):
 
         code_lines = []
         if self._on_new_page:
-            code_lines.append(r"\newpage")
+            code_lines.append(r"\new""page")
 
         for formatted in questions_formatted:
             question, answers = formatted
@@ -96,4 +96,3 @@ class Quadratics(Problem):
                 code_lines.append(r"\vspace{" + self.vert_space + "}")
 
         return "\n\n".join(code_lines)
-

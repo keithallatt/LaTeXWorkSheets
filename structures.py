@@ -1,6 +1,11 @@
+import random
 from functools import reduce
 from math import gcd
 from operator import mul
+import numpy as np
+
+
+FLOAT_TOLERANCE = 1e-15
 
 
 def make_square_free(n):
@@ -102,3 +107,44 @@ class QAdjointRoot:
             return "0"
 
         return fraction
+
+
+class Polynomial(np.polynomial.Polynomial):
+    def __str__(self, variable='x'):
+        if not len(self.coef):
+            return "0"
+        if len(self.coef) == 1:
+            c = self.coef[0]
+            return str(int(c)) if abs(c-round(c)) < FLOAT_TOLERANCE else str(c)
+        if not variable:
+            raise ValueError("Variable must be defined")
+
+        def term_of_deg_k(k):
+            if k == 0:
+                return ""
+            if k == 1:
+                return variable
+            if len(str(k)) == 1:
+                return variable + "^" + str(k)
+            return variable + "^{" + str(k) + "}"
+
+        terms = [term_of_deg_k(i) for i in range(len(self.coef))]
+
+        # eliminate 0 terms
+        term_coefficients = [(c, t) for c, t in zip(self.coef, terms) if abs(c) > FLOAT_TOLERANCE]
+
+        # convert floats that are within 1e-15 of an integer to an integer (does not mutate internal values)
+        term_coefficients = [
+            (int(c) if abs(c - round(c)) < FLOAT_TOLERANCE else c, t) for c, t in term_coefficients
+        ]
+
+        # convert terms into strings
+        term_coefficients = [
+            (str(c) if not t else "" if c == 1 else "-" if c == -1 else str(c))+t for c, t in term_coefficients
+        ]
+
+        term_coefficients = [
+            t if t.startswith("-") else "+"+t for t in term_coefficients
+        ]
+        term_coefficients[-1] = term_coefficients[-1].lstrip("+")
+        return ''.join(term_coefficients[::-1])
