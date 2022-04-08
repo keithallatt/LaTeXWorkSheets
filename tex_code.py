@@ -16,7 +16,7 @@ def _mask(length, shift):
     return mask_variable
 
 
-def compile_tex(filename, tex, solutions=True, double_compile=False, save_tex=False):
+def compile_tex(filename, tex, solutions=True, double_compile=False, save_tex=False, debug=False):
     """ Compile LaTeX code into a pdf and save it to the current working directory. """
     # make both tex and pdf filepaths.
     filepath = Path(filename)
@@ -40,12 +40,12 @@ def compile_tex(filename, tex, solutions=True, double_compile=False, save_tex=Fa
         f.write(tex_content)
 
     # compile the document using pdflatex
-    proc = subprocess.Popen(['pdflatex', '\\input{'+str(doc_name)+'}'])
-    proc.communicate()
-    if double_compile:
+    for _ in range(2 if double_compile else 1):
         # for some applications, such as those that have tables of contents, sometimes 2 compiles are necessary.
-        proc = subprocess.Popen(['pdflatex', '\\input{'+str(doc_name)+'}'])
-        proc.communicate()
+        proc = subprocess.Popen(['pdflatex', '\\input{'+str(doc_name)+'}'], stdout=subprocess.PIPE)
+        returned = proc.communicate()[0]
+        if debug:
+            print(returned)
 
     # rename the file to the specified name and copy the file back to the current working directory
     os.rename(doc_name.with_suffix('.pdf'), filepath_pdf)
