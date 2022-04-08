@@ -1,14 +1,14 @@
 import random
 from math import gcd
 
-from tex_code import Problem, GradeLevel, Difficulty
+from tex_code import Problem
 from structures import QAdjointRoot
 
 
 class Quadratics(Problem):
-    def __init__(self, num_problems: int = 3, difficulty: int = Difficulty.Basic, grade_level: int = GradeLevel.Grade7,
-                 factorable: bool = False, real_solutions: bool = False, vert_space: str = "7cm"):
-        super().__init__(grade_level=grade_level, difficulty=difficulty)
+    def __init__(self, num_problems: int = 3, factorable: bool = False,
+                 real_solutions: bool = False, vert_space: str = "7cm"):
+        super().__init__()
         self.num_problems = num_problems
         self.factorable = factorable
         self.real_solutions = real_solutions

@@ -79,6 +79,7 @@ class TexDocument(LaTeXPiece):
         """.split("\n"))
         self._preamble = list(map(str.strip, r"""
             \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
             \usepackage{titlesec}
             \setcounter{secnumdepth}{4}
             \renewcommand\thesection{\arabic{section}}
@@ -96,7 +97,7 @@ class TexDocument(LaTeXPiece):
             \usepackage{graphicx}
             \usepackage[colorlinks=true, allcolors=blue]{hyperref}
             \linespread{1.5}
-            \usepackage{titlesec}
+
             \titleformat{\section}
               {\normalfont\bfseries}{Problem \# \thesection}
               {0em}{}
@@ -138,38 +139,9 @@ class TexDocument(LaTeXPiece):
 
 # PROBLEM LEVEL #
 
-class GradeLevel:
-    mask = _mask(4, 0)
-    PreK = 0
-    Kindergarten = 1
-    Grade1 = 2
-    Grade2 = 3
-    Grade3 = 4
-    Grade4 = 5
-    Grade5 = 6
-    Grade6 = 7
-    Grade7 = 8
-    Grade8 = 9
-    Grade9 = 10
-    Grade10 = 11
-    Grade11 = 12
-    Grade12 = 13
-    University = 14
-
-
-class Difficulty:
-    mask = _mask(4, 4)
-    Basic = 1 << 4
-    Simple = 2 << 4
-    Intermediate = 3 << 4
-    Advanced = 4 << 4
-    Expert = 5 << 4
-
-
 class Problem(LaTeXPiece):
-    def __init__(self, grade_level: int = GradeLevel.Grade1, difficulty: int = Difficulty.Basic):
+    def __init__(self):
         super().__init__()
-        self.gd_encoded = grade_level | difficulty
 
     @abc.abstractmethod
     def __str__(self, solved=False):
