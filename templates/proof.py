@@ -26,14 +26,13 @@ class ProofProblem(Problem):
         self.vspace = vspace
 
     def __str__(self, solved=False):
-        new_page = r"\newpage"
+        prove_the_following = "Prove the following theorem."
         theorem_start = r"\begin{theorem}"
         theorem_end = r"\end{theorem}"
         proof_start = r"\begin{proof}"
         proof_end = r"\end{proof}"
 
         code_lines = [
-            new_page,
             theorem_start,
             self.theorem_statement,
             theorem_end
@@ -46,6 +45,7 @@ class ProofProblem(Problem):
                 proof_end
             ]
         else:
+            code_lines.insert(0, prove_the_following)
             code_lines.append(r"\vspace{"+self.vspace+"}")
 
         return "\n".join(code_lines)

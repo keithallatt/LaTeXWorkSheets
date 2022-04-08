@@ -80,9 +80,6 @@ class Quadratics(Problem):
         questions_formatted = [self.format_quadratic(*q) for q in self.quad_problems]
 
         code_lines = []
-        if self._on_new_page:
-            code_lines.append(r"\new""page")
-
         for formatted in questions_formatted:
             question, answers = formatted
 

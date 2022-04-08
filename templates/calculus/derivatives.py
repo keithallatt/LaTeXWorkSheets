@@ -24,9 +24,8 @@ class Differentiate(Problem):
 
         solution = "\\[" + question_prompt[9:-2] + "=" + str(self.derivative) + "\\]"
 
-
         if solved:
-            question_prompt += "\n\n" + solution
+            question_prompt = solution
         else:
             question_prompt += "\n\n\\vspace{5cm}"
 

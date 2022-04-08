@@ -62,7 +62,7 @@ def compile_tex(filename, tex, solutions=True, double_compile=False, save_tex=Fa
 
 class LaTeXPiece(abc.ABC):
     def __init__(self):
-        self._on_new_page = False
+        pass
 
     @abc.abstractmethod
     def __str__(self, solved=False):
@@ -90,12 +90,16 @@ class TexDocument(LaTeXPiece):
             {\normalfont\scshape\small}{\thesubsection}{1em}{}
             \titleformat{\subsubsection}
             {\normalfont\scshape\small}{\thesubsubsection}{1em}{}
- 
+            \usepackage{placeins}
             \usepackage[english]{babel}
             \usepackage{amsmath}
             \usepackage{graphicx}
             \usepackage[colorlinks=true, allcolors=blue]{hyperref}
             \linespread{1.5}
+            \usepackage{titlesec}
+            \titleformat{\section}
+              {\normalfont\bfseries}{Problem \# \thesection}
+              {0em}{}
             """.split("\n")))
 
         self._doc_begin = "\\begin{document}\n\n"
@@ -109,10 +113,8 @@ class TexDocument(LaTeXPiece):
     def add_content(self, tex):
         self._body.append(tex)
         if hasattr(tex, 'prerequisite_packages'):
-            # TODO: check for option clashes between imports.
+            # need to check for option clashes between imports.
             for prereq in tex.prerequisite_packages:
-                print("ADD PREREQ: ", prereq)
-
                 # naive solution;
                 if prereq not in self._preamble:
                     self._preamble.append(prereq)
@@ -126,7 +128,8 @@ class TexDocument(LaTeXPiece):
             self._preamble_comments,
             "\n".join(self._preamble),
             self._doc_begin,
-            "\n\n".join(map(lambda x: x.__str__(solved) if isinstance(x, LaTeXPiece) else str(x), self._body)),
+            "\n\n\\FloatBarrier\\section{}\\FloatBarrier\n\n".join(
+                [''] + list(map(lambda x: x.__str__(solved) if isinstance(x, LaTeXPiece) else str(x), self._body))),
             self._generated_by,
             self._doc_end
         ])
@@ -166,7 +169,6 @@ class Problem(LaTeXPiece):
     def __init__(self, grade_level: int = GradeLevel.Grade1, difficulty: int = Difficulty.Basic):
         super().__init__()
         self.gd_encoded = grade_level | difficulty
-        self._on_new_page = True
 
     @abc.abstractmethod
     def __str__(self, solved=False):
