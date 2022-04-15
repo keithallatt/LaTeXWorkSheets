@@ -115,15 +115,15 @@ class TermRearrangement(Problem):
         self.y_var = Variable("y")
 
         expression = self.y_var
-        opp_expres = self.x_var
+        opp_expression = self.x_var
 
         for i in range(depth):
             expression = self.operations[i](expression, self.right_hand_sides[i])
         for i in range(depth-1, -1, -1):
-            opp_expres = self.opposites[i](opp_expres, self.right_hand_sides[i])
+            opp_expression = self.opposites[i](opp_expression, self.right_hand_sides[i])
 
         self.question_expression = str(self.x_var) + "=" + str(expression)
-        self.solution = str(self.y_var) + "=" + str(opp_expres)
+        self.solution = str(self.y_var) + "=" + str(opp_expression)
 
     def __str__(self, solved=False):
         question = ["Rearrange terms to solve for $y$. Do not simplify.", f"$${self.question_expression}$$"]
@@ -134,4 +134,3 @@ class TermRearrangement(Problem):
             question.append(r"\vspace{5cm}")
 
         return "\n".join(question)
-
