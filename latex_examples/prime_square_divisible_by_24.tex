@@ -1,0 +1,47 @@
+%! Author = kallatt
+%! Date = 2022-04-06
+
+% Standalone file on its own, but using special
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Package
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\renewcommand\qedsymbol{$\blacksquare$}
+
+\linespread{1.5}
+
+% Document
+\begin{document}
+
+\begin{theorem}
+    % TEX THEOREM START %
+    For any prime $p \geq 5$, $p^2$ is one more than a multiple of 24.
+    % TEX THEOREM END %
+\end{theorem}
+
+\begin{proof}
+    % TEX PROOF START %
+    Let $p$ be a prime, $p \geq 5$.
+
+    The quantity ${p^2 - 1}$ equals ${(p-1)(p+1)}$, and as ${p \geq 5}$ prime, ${3 \not|\; p}$.
+    If ${p \equiv 1 \pmod{3}}$, then ${p-1 \equiv 0 \pmod{3}}$, and thus ${3 \mid p-1}$.
+    Otherwise, ${p \equiv 2 \pmod{3}}$, and so ${p+1 \equiv 0 \pmod{3}}$, and thus ${3 \mid p+1}$.
+    Thus ${(p-1)(p+1)}$ is a multiple of 3 for all ${p \geq 5}$ prime.
+
+    As $p$ is prime, and ${2 \not|\; p}$, ${p-1}$ and ${p+1}$ are both even.
+    As $\frac{p-1}{2}$, and $\frac{p+1}{2}$ are consecutive integers, one must be even, and thus one of ${p-1}$ and ${p+1}$ is a multiple of 4.
+    As one of ${p-1}$ and ${p+1}$ is a multiple of 4, and the other is certainly even, ${(p-1)(p+1)}$ is a multiple of 8.
+
+    As ${(p-1)(p+1)}$ is a multiple of 3 and a multiple of 8, and $\gcd(3, 8) = 1$, ${(p-1)(p+1)}$ must be a multiple of 24.
+
+    Thus ${p^2-1}$ is a multiple of 24, and $p^2$ is one more than a multiple of 24.
+
+    % TEX PROOF END %
+\end{proof}
+
+\end{document}

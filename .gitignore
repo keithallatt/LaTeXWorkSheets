@@ -1,5 +1,6 @@
 .idea
 venv
 *.tex
+!latex_examples/*.tex
 *.pdf
 out
