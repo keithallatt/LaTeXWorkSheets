@@ -17,7 +17,7 @@ def _mask(length, shift):
 
 
 def compile_tex(filename, tex, solutions=True, double_compile=False, save_tex=False, debug=False):
-    """ Compile LaTeX code into a pdf and save it to the current working directory. """
+    """ Compile LaTeX into a pdf and save it to the current working directory. """
     # make both tex and pdf filepaths.
     filepath = Path(filename)
     filepath_tex = filepath.with_suffix('.tex')

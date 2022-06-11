@@ -1,8 +1,9 @@
 from tex_code import TexDocument, compile_tex
-from templates.quadratics import Quadratics
-from templates.proof import ProofFromTeXFile
+from templates.algebra.quadratics import Quadratics
+from templates.proofs.proof import ProofFromTeXFile
 from templates.calculus.derivatives import Differentiate
 from templates.algebra.solve_for import TermRearrangement
+
 
 if __name__ == '__main__':
     td = TexDocument()

@@ -4,3 +4,4 @@ venv
 !latex_examples/*.tex
 *.pdf
 out
+**/__pycache__
